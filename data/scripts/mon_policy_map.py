@@ -34,4 +34,4 @@ df_target = pd.merge(df_target, df_upper, left_index=True, right_index=True, how
 start_date = "2000-01-01"
 df_final = pd.merge(df_inf12, df_target, left_index=True, right_index=True, how='inner')
 df_f = df_final[df_final.index >= start_date]
-df_f.to_csv('../mom_poliy_map.csv', header=True, index=True)
+df_f.to_csv('../mom_policy_map.csv', header=True, index=True)
