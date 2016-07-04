@@ -16,4 +16,4 @@ fc = fa.Finn_Api(key)
 ## fetch data
 series = ['bcb.brexvolt', 'BCB.BRIMPVOLT', 'BCB.BREXPTM', 'BCB.BRIMPTM']
 df = fc.get_series(series).dropna()
-df.to_csv('../terms_of_trade.csv', index=True, header=0)
+df.to_csv('../terms_of_trade.csv', index=True, header=True)
