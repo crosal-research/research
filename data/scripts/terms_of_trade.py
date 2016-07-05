@@ -1,19 +1,15 @@
 ######################################################################
-# script to fetch data about terms of trade for Brazil
+# script to fetch data about terms of trade for Brazil from ipeadata
 # initial date: 04/07/2016
 ######################################################################
-import finnacloud_api as fa
-import json, os
 import pandas as pd
 
+## url for the data
+url = "http://www.ipeadata.gov.br/ExibeSerie.aspx?oper=exportCSVBr&"
+url = url + "serid35681=35681&serid35584=35584"
+df = pd.read_csv(url, sep = ";", usecols=[0, 1, 2],
+                 parse_dates=[0], decimal=",", index_col=0).dropna()
+df.columns = ['import', 'export']
 
-## finnacloud bloiler place
-f_dir = os.path.join(os.path.expanduser('~'),"crosal/.finnacloud.json")
-key = json.loads(open(f_dir).read())['key'].encode('utf-8')
-fc = fa.Finn_Api(key)
-
-
-## fetch data
-series = ['bcb.brexvolt', 'BCB.BRIMPVOLT', 'BCB.BREXPTM', 'BCB.BRIMPTM']
-df = fc.get_series(series).dropna()
+## save data
 df.to_csv('../terms_of_trade.csv', index=True, header=True)
