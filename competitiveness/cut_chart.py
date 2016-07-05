@@ -24,4 +24,4 @@ layout = go.Layout(title="<b>Unit Labor Cost - Brazil </b>",
                    font=dict(size=12), legend=dict(x=0, y = -0.2),
                    yaxis=dict(title="pts", tickmode="auto", nticks=5))
 fig = go.Figure(data=data, layout=layout)
-py.image.save_as(fig, 'cut.jpeg', format="jpeg")
+py.image.save_as(fig, '../exhibits/cut.jpeg', format="jpeg")

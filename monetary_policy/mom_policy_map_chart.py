@@ -32,4 +32,4 @@ layout = go.Layout(title="<b>Monetary Policy Credibility Map</b>",
                    yaxis=dict(title="%p.y.", tickmode='auto', nticks=5),
                    font=dict(size=12), legend=dict(x=0, y=-0.4))
 fig = go.Figure(data=data, layout=layout)
-py.image.save_as(fig, 'monetary_pol_map.jpeg', format="jpeg")
+py.image.save_as(fig, '../exhibits/monetary_pol_map.jpeg', format="jpeg")

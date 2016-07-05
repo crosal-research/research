@@ -24,4 +24,4 @@ layout = go.Layout(title="<b>Interest Rates Term Premium</b>",
                    yaxis=dict(title="%p.y", tickmode="auto", nticks=5),
                    font=dict(size=12), legend=dict(x=0, y=-0.4))
 fig = go.Figure(data=data, layout=layout)
-py.image.save_as(fig, 'interest_spreads.jpeg', format="jpeg")
+py.image.save_as(fig, '../exhibits/interest_spreads.jpeg', format="jpeg")

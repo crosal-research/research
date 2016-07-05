@@ -23,4 +23,4 @@ layout = go.Layout(title="<b>Effective Exchange Rates</b>",
                    font=dict(size=12), legend=dict(x=0, y = -0.2),
                    yaxis=dict(title="% (0=Average)", tickmode="auto", nticks=5))
 fig = go.Figure(data=data, layout=layout)
-py.image.save_as(fig, 'real_exchange_rate.jpeg', format="jpeg")
+py.image.save_as(fig, '../exhibits/real_exchange_rate.jpeg', format="jpeg")

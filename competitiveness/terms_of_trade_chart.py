@@ -28,4 +28,4 @@ layout = go.Layout(title="<b>Terms of Trade</b>",
                    yaxis=dict(title="% (0=average)", tickmode="auto", nticks="5"),
                    legend=dict(x=0, y=-0.2))
 fig = go.Figure(data=data, layout=layout)
-py.image.save_as(fig, "terms_of_trade.jpeg", format="jpeg")
+py.image.save_as(fig, "../exhibits/terms_of_trade.jpeg", format="jpeg")
