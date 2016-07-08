@@ -13,17 +13,14 @@ _f_dir = os.path.join(os.path.expanduser('~'),"crosal/.fred.json")
 _key = json.loads(open(_f_dir).read())['key'].encode('utf-8')
 
 
-def _fetch_data(ticker):
+def _parse_data(fred_resp, ticker):
     '''
-    fetch single series from fred and return data frame.
+    parses single series from a response from fred's api and return data frame.
     input:
-    -ticker: string - series tickers
+    -fred_resp: string - text to be parsed
     output: dataframe
     '''
-    address = "https://api.stlouisfed.org/fred/series/observations?" \
-              "series_id={}&api_key={}&file_type=json"
-    urls = address.format(ticker, _key)
-    resp = json.loads(requests.get(urls).text)
+    resp = json.loads(fred_resp)
     data = [[s['date'], s['value']] for s in resp['observations']]
     return pd.DataFrame(data, columns=["date", ticker]).set_index('date')
 
@@ -35,11 +32,14 @@ def fetch_fred(tickers):
     -tickers: [str], where str are tickers
     output: dataframe.
     '''
-    if len(tickers) == 1:
-        df = _fetch_data(tickers[0])
-    else:
-        df = _fetch_data(tickers[0])
-        for i in tickers[1:]:
-            df = pd.merge(df, _fetch_data(i), right_index=True,
-                              left_index=True, how="outer")
+    s = requests.session()
+    address = "https://api.stlouisfed.org/fred/series/observations?" \
+              "series_id={}&api_key={}&file_type=json"
+    url = address.format(tickers[0], _key)
+    df = _parse_data(s.get(url).text, tickers[0])
+    for tkc in tickers[1:]:
+        url = address.format(tkc, _key)
+        df = pd.merge(df, _parse_data(s.get(url).text, tkc), right_index=True,
+                      left_index=True, how="outer")
+    s.close()
     return df
