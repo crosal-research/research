@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.plotly as py
 import plotly.graph_objs as go
 
-df = pd.read_csv('../data/cut_us.csv', index_col=0)
+df = pd.read_csv('../data/cut_us.csv', index_col=0, na_values=['.']).dropna()
 n = [1.0 for i in range(0, df.size)]
 df_ave = pd.DataFrame(n, index=df.index, columns = ['average']) * df.mean()[0]
 df_mid = pd.merge(df, df_ave, left_index=True, right_index=True, how="inner")
