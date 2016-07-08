@@ -9,7 +9,6 @@ import pandas as pd
 import requests
 
 
-## industry
 def _fetch_data(reps):
     '''
     function to parse a response from a single series from the ibge API to
@@ -24,10 +23,8 @@ def _fetch_data(reps):
 
 
 def ibge_fetch(urls):
-    '''
-    function to fetch series from urls using IBGE's api
-    input. takes a string and returns a pandas dataframe.
-    - urls: string with url.
+    '''function to fetch series IBGE's api using full url as input. Takes
+    a string and returns a pandas dataframe.  - urls: string with url.
     return: pandas dataframe
     '''
     s = requests.session()
@@ -39,7 +36,3 @@ def ibge_fetch(urls):
                       right_index=True, how="outer")
     s.close()
     return df
-
-
-url = "http://www.sidra.ibge.gov.br/api/values/t/3653" + \
-      "/p/all/v/3134/c544/{}/n1/1/f/a"
