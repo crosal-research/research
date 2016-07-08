@@ -10,8 +10,11 @@ import plotly.graph_objs as go
 df = pd.read_csv('../data/confianca.csv', index_col=0, header=0,
                  names = ["service", "consumer"])
 
+start_date = "2008-06-01"
+df_new = df[df.index >= start_date]
+
 # chart: confidence - service
-trace0 = go.Scatter(x=df.index, y=df['service'])
+trace0 = go.Scatter(x=df_new.index, y=df_new['service'])
 data = [trace0]
 layout = go.Layout(title="<b>Service Sector Confidence Index</b>",
                    font=dict(size=24))
