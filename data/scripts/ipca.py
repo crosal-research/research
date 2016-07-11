@@ -469,15 +469,31 @@ items = [i for i in d if len(d[i].split(".")[0]) <= 4]
 names = [d[i].split(".")[1] for i in d if len(d[i].split(".")[0]) <= 4]
 
 
-# requests monthly changes to sidra's api
+# requests monthly changes from sidra's api
 req = ",".join(items)
 
 address = "http://www.sidra.ibge.gov.br/api/values/t/1419" + \
       "/p/all/v/63/c315/{}/n1/1/f/a"
 urls = [address.format(u) for u in items]
+url = address.format(req)
 
-df = ibge_fetch(urls)
-df.columns = items
-df.index.name = "date"
+
+df = ibge_fetch([url])
+df.columns = [d[i].split(".")[1] for i in items]
 
 df.to_csv("../../data/ipca_ch.csv", head=True, index = True)
+
+
+# requests monthly percentages from sidra's api
+req = ",".join(items)
+
+address = "http://www.sidra.ibge.gov.br/api/values/t/1419" + \
+      "/p/all/v/66/c315/{}/n1/1/f/a"
+urls = [address.format(u) for u in items]
+url = address.format(req)
+
+
+df = ibge_fetch([url])
+df.columns = [d[i].split(".")[1] for i in items]
+
+df.to_csv("../../data/ipca_peso.csv", head=True, index = True)
