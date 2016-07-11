@@ -16,25 +16,12 @@ d = {"90671": "Combustíveis e lubrificantes",
      "103154":  "Hipermercados e supermercados",
      "90673":  "Tecidos, vestuário e calcados",
      "2759":  "Móveis e eletrodomesticos",
-     "31555":  "Móveis",
-     "31556":  "Eletrodomesticos",
      "103155":  "Artigos farmaceuticos, medicos, ortopedicos, de perfumaria e cosmeticos",
      "103156":  "Livros, jornais, revistas e papelaria",
      "103157":  "Equipamentos e materiais para escritório, informática e comunicacao",
      "103158":  "Outros artigos de uso pessoal e domestico"}
 
-series = ['31556',
-          '31555',
-          '103158',
-          '103156',
-          '103157',
-          '103154',
-          '103155',
-          '90673',
-          '90672',
-          '90671',
-          '2759']
-
+series = d.keys()
 names = [d[k] for k in series]
 urls = [url.format(s) for s in series]
 
@@ -57,6 +44,7 @@ names = ["Total", "Auto and Motorbikes", "Construction"]
 df1 = ibge_fetch(urls1)
 df1.columns = names
 df1.index.name = "Date"
+
 
 ## Data Consolidation and save onto to the disk
 df_final = pd.merge(df, df1, left_index=True, right_index=True, how="outer")
