@@ -24,7 +24,8 @@ def _fetch_data(reps):
 
 def ibge_fetch(urls):
     '''function to fetch series IBGE's api using full url as input. Takes
-    a string and returns a pandas dataframe.  - urls: string with url.
+    a string and returns a pandas dataframe.  -
+    urls: list(str) with url.
     return: pandas dataframe
     '''
     s = requests.session()
