@@ -15,6 +15,16 @@ c = suds.client.Client( url, transport=suds_requests.RequestsTransport())
 
 
 def _parse_resp(resp):
+    """
+    takes a list, a response to a webservice resquest, and parses it. Returns
+    a pandas data frame
+    input:
+    -----
+    - resp: list
+    ouput:
+    -----
+    - pandas data frame
+    """
     vals = []
     for obs in resp.valores:
         dat = pd.datetime(obs.ano, obs.mes, obs.dia)
@@ -23,9 +33,21 @@ def _parse_resp(resp):
     return pd.DataFrame(vals).set_index(0)
 
 
-def fetch_bcb(series, date_ini, date_final):
+def fetch_bcb(series, date_ini='01/01/2016', date_final='31/01/2016'):
+    """
+    takes a list of BCB's sereusm abd begining and ending date. Returns
+    a pandas data frame
+    input:
+    -----
+    - resp: list of ticker of series.
+    - date_ini = string.
+    - date_final = string.
+    ouput:
+    -----
+    - pandas data frame
+    """
     resp = c.service.getValoresSeriesVO(series, date_ini, date_final)
-    df =  _parse_resp(resp[0])
+    df = _parse_resp(resp[0])
     for s in resp[1:]:
         df = pd.merge(df, _parse_resp(s), left_index=True,
                       right_index=True, how="outer")
