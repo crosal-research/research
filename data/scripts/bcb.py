@@ -11,7 +11,7 @@ __all__ = ['fetch_bcb']
 
 url = "https://www3.bcb.gov.br/sgspub/JSP/sgsgeral/FachadaWSSGS.wsdl"
 
-c = suds.client.Client( url, transport=suds_requests.RequestsTransport())
+c = suds.client.Client(url, transport=suds_requests.RequestsTransport())
 
 
 def _parse_resp(resp):
@@ -30,7 +30,9 @@ def _parse_resp(resp):
         dat = pd.datetime(obs.ano, obs.mes, obs.dia)
         val = obs.valor if obs.valor is not None else "NaN"
         vals.append([dat, val])
-    return pd.DataFrame(vals).set_index(0)
+    df = pd.DataFrame(vals).set_index(0)
+    df.columns = [resp.oid]
+    return df
 
 
 def fetch_bcb(series, date_ini='01/01/2016', date_final='31/01/2016'):
@@ -52,5 +54,4 @@ def fetch_bcb(series, date_ini='01/01/2016', date_final='31/01/2016'):
         df = pd.merge(df, _parse_resp(s), left_index=True,
                       right_index=True, how="outer")
     df.index.name = "date"
-    df.columns = series
     return df
