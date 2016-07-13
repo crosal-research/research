@@ -12,6 +12,7 @@ names = ['current_account', 'cc_reveneus', 'cc_spending', 'trade_balance',
          'good_exports', 'good_imports', 'serv_balance', 'serv_exports',
          'serv_imports', 'GDP']
 
+d = dict(zip(series, names))
 df = fetch_bcb(series, '01/01/1995', '01/05/2016')
-df.columns = names
+df.columns = [d[n] for n in df.columns]
 df.to_csv('../trade_balance.csv', header=True, index=True)
