@@ -31,7 +31,7 @@ def _parse_resp(resp):
         val = obs.valor if obs.valor is not None else "NaN"
         vals.append([dat, val])
     df = pd.DataFrame(vals).set_index(0)
-    df.columns = [resp.oid]
+    df.columns = [str(resp.oid)]
     return df
 
 
