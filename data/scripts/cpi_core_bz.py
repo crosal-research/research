@@ -7,7 +7,7 @@ import pandas as pd
 from datetime import datetime
 
 series ={"433":"cpi", "4447":"tradables", "4448": "non-tradables",
-         "4449": "nonitored", "4466": "core", "11428": "free"}
+         "4449": "monitored", "4466": "core", "11428": "free"}
 
 
 today = datetime.today().strftime("%d/%m/%Y")
