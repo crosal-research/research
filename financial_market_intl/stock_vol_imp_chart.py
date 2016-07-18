@@ -7,9 +7,7 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import numpy as np
 
-df = pd.read_csv("../data/stock_vol_imp.csv", header=0, index_col=0)
-
-
+df = pd.read_csv("../data/stock_vol_imp.csv", header=0, index_col=0, na_values = ["."])
 
 ## vixes
 date_new = "2014-01-01"
@@ -24,3 +22,25 @@ layout = go.Layout(title="<b>Implicit Vol - Stock Markets</b>",
                    font=dict(size=18), legend=dict(x=0, y=-0.4))
 fig = go.Figure(data=data, layout=layout)
 py.image.save_as(fig, "../exhibits/stock_vol_imp.jpeg", format="jpeg")
+
+
+## vix
+
+ave_vix = df["VIXCLS"].mean()
+df_vix = pd.merge(pd.DataFrame(np.ones(df.shape[0])*ave_vix, index = df.index),
+                  pd.DataFrame(df["VIXCLS"].values,index=df.index),
+                  right_index=True, left_index=True, how="inner")
+df_vix.columns = ["mean", "vix"]
+
+date_vix = "2014-01-01"
+df_vix_new = df_vix[df_vix.index >= date_vix]
+
+trace11 = go.Scatter(x=df_vix_new.index, y = df_vix_new['vix'], name = "VIX")
+trace12 = go.Scatter(x=df_vix_new.index, y = df_vix_new['mean'], name = "Average",
+                     line=dict(dash="dash"))
+data1 = [trace11, trace12]
+layout1 = go.Layout(title="<b>VIX</b>",
+                   yaxis=dict(title="pts", tickmode="auto", nticks=5),
+                   font=dict(size=18), legend=dict(x=0, y=-0.4))
+fig = go.Figure(data=data1, layout=layout1)
+py.image.save_as(fig, "../exhibits/vix_chart.jpeg", format="jpeg")
