@@ -7,9 +7,13 @@
 from ibge import *
 
 
-## categories
+## categories: no adjusted
 url = "http://www.sidra.ibge.gov.br/api/values/t/3840" + \
       "/p/all/v/3801/c12355/{}/n1/1/f/a"
+
+## categories: no adjusted
+url_sa = "http://www.sidra.ibge.gov.br/api/values/t/3840" + \
+      "/p/all/v/6971/c12355/{}/n1/1/f/a"
 
 
 d = {"107071":  "Total",
@@ -34,10 +38,14 @@ d = {"107071":  "Total",
 series = d.keys()
 names = [d[s] for s in series]
 
-
-
 urls = [url.format(s) for s in series]
+url_sa = [url_sa.format(s) for s in series]
 df = ibge_fetch(urls)
+df_sa = ibge_fetch(urls)
 df.columns = names
+df_sa.columns = names
 df.index.name = "Date"
+df_sa.index.name = "Date"
+
 df.to_csv("../servicos_brazil.csv")
+df_sa.to_csv("../servicos_brazil_sa.csv")
