@@ -5,6 +5,7 @@
 import suds.client
 import suds_requests
 import pandas as pd
+import numpy as np
 
 __all__ = ['fetch_bcb']
 
@@ -28,7 +29,7 @@ def _parse_resp(resp):
     vals = []
     for obs in resp.valores:
         dat = pd.datetime(obs.ano, obs.mes, obs.dia)
-        val = obs.valor if obs.valor is not None else "NaN"
+        val = float(obs.valor) if obs.valor is not None else np.nan
         vals.append([dat, val])
     df = pd.DataFrame(vals).set_index(0)
     df.columns = [str(resp.oid)]
