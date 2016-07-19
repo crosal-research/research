@@ -20,7 +20,7 @@ df['target'][-1] = 4.5
 
 # series manipulations
 df_inf = df[['ipca', 'core']].dropna()
-df_inf12 = pd.rolling_apply(df_inf, 12, lambda x: np.prod(1+x/100) -1)*100
+df_inf12 = (1+df_inf/100).cumprod().pct_change(periods=12)*100
 
 # target
 df_center = pd.DataFrame(df['target'].fillna(method="pad"))
