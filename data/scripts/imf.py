@@ -75,20 +75,27 @@ def _parse_obs(obs):
                         columns=['date', obs[0]]).set_index("date")
 
 
-def fetch_imf(id, freq="M"):
+def fetch_imf(id, ref_are=[], indicators=[], freq="M"):
     '''
     takes id string representing the db and a default string freq, representing the
     frequency. Returns a dataframe
     input:
     - id: string - db ticker
+    - ref_are:list(string) - reference are
+    - indicators: list(string) - cl_indicators
     - freq: string - frequency
     output:
     - dataframe: index - date, columns: values for each indicator.
     '''
-    url = _url_data+"{}/".format(id)
-    series = json.loads(requests.get(url).text)['CompactData']['DataSet']['Series']
-    dat = [(s["@COMMODITY"], s['Obs']) for s in series if s["@FREQ"] == freq]
-    df = _parse_obs(dat[0])
-    for d in dat[1:]:
-        df = pd.merge(df, _parse_obs(d), left_index=True, right_index=True, how="outer")
-    return df
+    labels = {"COMMP":"@COMMODITY"}
+    if id in labels:
+        url = _url_data+"{}/{}.{}".format(id, "+".join(ref_are), "+".join(indicators))
+        series = json.loads(requests.get(url).text)['CompactData']['DataSet']['Series']
+        dat = [(s[labels[id]], s['Obs']) for s in series
+               if ("Obs" in s.keys() and s["@FREQ"] == freq)]
+        df = _parse_obs(dat[0])
+        for d in dat[1:]:
+            df = pd.merge(df, _parse_obs(d), left_index=True, right_index=True, how="outer")
+        return df
+    else:
+        print "Series not available"
