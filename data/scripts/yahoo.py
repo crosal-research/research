@@ -4,7 +4,7 @@
 ######################################################################
 import pandas as pd
 
-__all__ = ["fetch_fred"]
+__all__ = ["fetch_yahoo"]
 
 def fetch_yahoo(tickers, date_ini, date_final):
     '''
