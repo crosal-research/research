@@ -25,7 +25,9 @@ series = {"7544": "Total_rev",
           "24391": "revenues_by_RFB",
           "24392": "revenues_not_RFB",
           "24393": "incentives",
-          "24394": "net_revenues"}
+          "24394": "net_revenues",
+          "4381": "GDP_monthly",
+          "433": "ipca"}
 
 date_ini = "31/01/1997"
 today = datetime.today().strftime("%d/%m/%Y")
