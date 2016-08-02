@@ -24,6 +24,19 @@ def net_flow(newdate, series, title, ytitle):
                         font=dict(size=18), legend=dict(x=0, y=-0.4))
     return go.Figure(data=data0, layout=layout0)
 
+
+# total
 py.image.save_as(net_flow("2010-01-01", ["net_financial_account"], "Net Financial Account",
                           ytitle="USDmn"),
                 "../exhibits/net_capital_flow.jpeg",format="jpeg")
+
+
+# FDI
+py.image.save_as(net_flow("2010-01-01", ["net_fdi"], "Net FDI",
+                          ytitle="USDmn"),
+                "../exhibits/net_fdi.jpeg",format="jpeg")
+
+# Capital Inflow
+py.image.save_as(net_flow("2010-01-01", ["net_portfolio_flow"], "Net Portfolio Flow",
+                          ytitle="USDmn"),
+                "../exhibits/net_portfolio.jpeg",format="jpeg")
