@@ -16,11 +16,16 @@ cf_cycle, cf_trend =sm.tsa.filters.cffilter(df_gdp,
                                             drift=True)
 
 ##draw chart for GDP gap
-trace01 = go.Scatter(x=cf_cycle.index, y=cf_cycle,
-                     name= "Output Gap")
-data = [trace01]
-layout = go.Layout(title="<b>Output Gap-Brazil</b",
-                   font=dict(size=18),
-                   yaxis=dict(title="%Trend"))
-fig = go.Figure(data=data, layout=layout)
-py.image.save_as(fig, "../exhibits/outputgap.jpeg", format="jpeg")
+def gap_fig(df_input, title, y_title, date_ini):
+    df = df_input[df_input.index >= date_ini]
+    trace01 = go.Bar(x=df.index, y=df,
+                     name= title)
+    data = [trace01]
+    layout = go.Layout(title="<b>{}</b>".format(title),
+                       font=dict(size=18),
+                       yaxis=dict(title="{}".format(y_title)))
+    return go.Figure(data=data, layout=layout)
+
+
+py.image.save_as(gap_fig(cf_cycle, "Output Gap", "%trend", "2010-01-01"),
+                 "../exhibits/outputgap.jpeg", format="jpeg")
