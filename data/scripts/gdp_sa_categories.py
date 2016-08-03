@@ -1,6 +1,7 @@
 ######################################################################
 # Script to fetch gdp data fro ibge sidra api
 # initial date:
+# comment: fix the data to quarterly from monthly.
 ######################################################################
 from ibge import *
 
