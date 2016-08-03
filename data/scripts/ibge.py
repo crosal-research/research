@@ -6,6 +6,7 @@
 ######################################################################
 
 import pandas as pd
+import numpy as np
 import requests
 
 
@@ -17,9 +18,12 @@ def _fetch_data(reps):
     - resp: string json
     return: pandas dataframe
     '''
+    freq = {12:"MS", 4: "QS", 1: "A"}
     df = pd.read_json(reps).iloc[1:].pivot("D1C", "D3C", "V")
     dates = pd.to_datetime([d+"01" for d in df.index])
-    return pd.DataFrame(df.values, columns=df.columns, index=dates)
+    year_obs = np.unique(dates.year, return_counts=True)[1].max()
+    dates_corrected = pd.date_range(dates[0], periods=len(dates), freq=freq[year_obs])
+    return pd.DataFrame(df.values, columns=df.columns, index=dates_corrected)
 
 
 def ibge_fetch(urls):
