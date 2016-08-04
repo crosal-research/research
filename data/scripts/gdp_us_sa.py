@@ -5,6 +5,6 @@
 import pandas as pd
 from fred import *
 
-series = ["GDP"]
+series = ["GDPC1"]
 df = fetch_fred(series)
 df.to_csv("../gdp_us_sa.csv", header=True, index=True)
