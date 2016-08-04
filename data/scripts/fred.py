@@ -5,12 +5,12 @@
 ######################################################################
 import requests
 import pandas as pd
-import json, os
+import json
 
 __all__ = ["fetch_fred"]
 
-_f_dir = os.path.join(os.path.expanduser('~'),"crosal/.fred.json")
-_key = json.loads(open(_f_dir).read())['key'].encode('utf-8')
+_f_dir = "/home/jmrosal/Documents/crosal/.keys.json"
+_key = json.loads(open(_f_dir).read())['fred']['key'].encode('utf-8')
 
 
 def _parse_data(fred_resp, ticker):
