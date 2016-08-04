@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 import json
 import xmltodict
-import collections
+
 
 __all__ = ["fetch_oecd_dbs", "fetch_oecd_dimensions", "fetch_oecd_codes",
            "fetch_oecd"]
@@ -33,7 +33,7 @@ def fetch_oecd_dbs():
 
 def fetch_oecd_codes(id, dimension):
     '''
-    takes database id and dimension as input and returns a dataframe with dbs' dimensions.
+    takes database id and dimension as input and returns a dataframe with dbs' codes.
     -input:
     string - db's id.
     -output:
@@ -42,7 +42,7 @@ def fetch_oecd_codes(id, dimension):
     url = _url_structure+"{}".format(id)
     root = xmltodict.parse(requests.get(url).text.encode("utf-8"))
     doc = root["message:Structure"]["message:CodeLists"]["CodeList"]
-    codes = [d for d in doc if d["@id"]==dimension][0]["Code"]
+    codes = [d for d in doc if d["@id"] == dimension][0]["Code"]
     return pd.DataFrame([(c['@value'], c['Description'][0]["#text"]) for c in codes],
                         columns=["codes", "location"]).set_index("codes")
 
@@ -67,22 +67,19 @@ def _parse_data(data):
     return []
 
 
-def fetch_oecd(id, agency="all", **p):
+def fetch_oecd(id, agency="all", locations=[], series=[], var=[], freq="M"):
     '''
     takes bd id, params and agency as inputs and returns dataframe with
     obsvation of series.
     input:
     - id: string - db's code
-    - params: OrderedDict - parameter of the rest url
+    - locations: list(string)
+    - series: list(string) - example: ["GDP"])
+    - var: list(string)    - example: ["CUR"]
+    - freq: list(string)
     - agency: string - agency where the data is from.
     '''
-    params = collections.OrderedDict()
-    params["locations"] = p['locations']
-    params["series"] = p['series']
-    params["var"] = p['var']
-    params["freq"] = p["freq"]
-
-    par = ".".join(["+".join(params[k]) for k in params])
+    params = ["+".join(locations), "+".join(series), "+".join(var), freq]
+    par = ".".join(p for p in params if p != "")
     url = _url_data+"{}/{}/{}?".format(id, par, agency)
-    return url
-#    return requests.get(url).text.encode("utf-8")
+    return json.loads(requests.get(url).text.encode("utf-8"))
