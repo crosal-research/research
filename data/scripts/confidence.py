@@ -10,8 +10,8 @@ import pandas as pd
 
 
 ## finnacloud bloiler place
-f_dir = os.path.join(os.path.expanduser('~'),"crosal/.finnacloud.json")
-key = json.loads(open(f_dir).read())['key'].encode('utf-8')
+_f_dir = "/home/jmrosal/Documents/crosal/.keys.json"
+key = json.loads(open(_f_dir).read())['finnacloud']['key'].encode('utf-8')
 fc = fa.Finn_Api(key)
 
 
