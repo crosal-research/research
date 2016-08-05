@@ -2,14 +2,13 @@
 # Script to download from finnacloud interest rate spread.
 # Initial date: 28/06/2016
 ######################################################################
-import finnacloud_api as fa
+import bcb
 import json, os
 import pandas as pd
 
-f_dir = os.path.join(os.path.expanduser('~'),"crosal/.finnacloud.json")
-key = json.loads(open(f_dir).read())['key'].encode('utf-8')
-fc = fa.Finn_Api(key)
 
-series = ['bcb.selic', 'bcb.cdi6m','bcb.cdi1y']
-df = fc.get_series(series)
+series = {"1178":"Selic rate", "7801":"cdi1m", "7802": "cdi2m", "7805":"cd16m",
+          "7806": "cdi1h"}
+df = bcb.fetch_bcb(series.keys())
+names = [series[n] for n in df.columns]
 df.to_csv('./interest_spread.csv', header=True, index=True)
