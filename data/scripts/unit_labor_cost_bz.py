@@ -2,17 +2,15 @@
 # fetch data for unit labor cost, Brazil
 # initial date: 04/07/2016
 ######################################################################
-import finnacloud_api as fa
-import json, os
 import pandas as pd
+import bcb
+from datetime import datetime
 
 
-f_dir = os.path.join(os.path.expanduser('~'),"crosal/.finnacloud.json")
-key = json.loads(open(f_dir).read())['key'].encode('utf-8')
-fc = fa.Finn_Api(key)
+date_ini = "01/01/1990"
+today = datetime.today().strftime("%d/%m/%Y")
 
-
-series = ['BCB.BRULTUS']
-df = fc.get_series(series)
-df.columns = ["cut"]
+series = {'11774':"Labor Productivty in USD",'11777':"Deflated Wage cost in USD"}
+df = bcb.fetch_bcb(series.keys(), date_ini, today)
+df.columns = [series[d] for d in df.columns]
 df.to_csv("../cut.csv", header=True, index=True)
