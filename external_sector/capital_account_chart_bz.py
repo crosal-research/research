@@ -14,10 +14,12 @@ def net_flow(newdate, series, title, ytitle):
     df_new = df[df.index >= newdate]
     df_sum = df.rolling(window=12).mean()
     df_sum_new = df_sum[df_sum.index >= newdate]
+    df_last = new_date.tail(1)
     trace01 = go.Scatter(x=df_new.index, y=df_new[series[0]],
                          name="Monthly")
     trace02 = go.Scatter(x=df_sum_new.index, y=df_sum_new[series[0]],
                          name="12M rolling average", line=dict(dash="dot"))
+
     data0 = [trace01, trace02]
     layout0 = go.Layout(title="<b>{}</b>".format(title),
                         yaxis=dict(title=ytitle, tickmode="auto", nticks=5),
