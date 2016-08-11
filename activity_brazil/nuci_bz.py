@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.plotly as py
 import plotly.graph_objs as go
 import numpy as np
-
+o
 df = pd.read_csv("../data/nuci_bz.csv", index_col=[0], usecols=[0,1])
 df_ave = pd.DataFrame(np.ones(len(df))*df.mean()[0], index = df.index)
 df_col = pd.merge(df, df_ave, left_index=True, right_index=True, how="inner")
