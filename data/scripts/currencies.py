@@ -44,7 +44,7 @@ series = {"EC8":
            "ticker":"XUDLCDD"},
           "C8H":
           {"name":"Euro",
-           "ticker": "XUDLERD"},
+           "ticker":"XUDLERD"},
           "ECW":
           {"name": "Sterling",
            "ticker": "XUDLGBD"},
@@ -81,5 +81,6 @@ series = {"EC8":
            "ticker":"XUDLZRD"}}
 
 
-df = boe.fetch_boe(["RLT", "ECT", "EC5", "IIK", "ECV", "IIO"], "01/01/2016")
+df = boe.fetch_boe(["RLT", "ECT", "EC5", "IIK", "ECV", "IIO", "EC8", "IIQ", "C8H", "IIS"], "01/01/2016")
 df.columns = [series[s]["name"] for d in df.columns for s in series if series[s]["ticker"] == d]
+df.to_csv("../currencies.csv", header=True, index=True)
