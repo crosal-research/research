@@ -11,9 +11,9 @@ from ibge import *
 url = "http://www.sidra.ibge.gov.br/api/values/t/3840" + \
       "/p/all/v/3801/c12355/{}/n1/1/f/a"
 
-## categories: no adjusted
+## categories: sa adjusted
 url_sa = "http://www.sidra.ibge.gov.br/api/values/t/3840" + \
-      "/p/all/v/6971/c12355/{}/n1/1/f/a"
+      "/p/all/v/6945/c12355/{}/n1/1/f/a"
 
 
 d = {"107071":  "Total",
@@ -41,9 +41,9 @@ names = [d[s] for s in series]
 urls = [url.format(s) for s in series]
 url_sa = [url_sa.format(s) for s in series]
 df = ibge_fetch(urls)
-df_sa = ibge_fetch(urls)
-df.columns = names
-df_sa.columns = names
+df_sa = ibge_fetch(url_sa)
+df.columns = [d[k] for k in df.columns]
+df_sa.columns = [d[k] for k in df_sa.columns]
 df.index.name = "Date"
 df_sa.index.name = "Date"
 
