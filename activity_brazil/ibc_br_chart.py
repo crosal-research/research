@@ -21,12 +21,16 @@ def month_ma_chart(date_new, df_ma, name1, name2, title):
     df_new = df_ma[df_ma.index >= date_new]
     trace01 = go.Scatter(x=df_new.index, y=df_new.iloc[:,0], name=name1)
     trace02 = go.Bar(x=df_new.index, y=df_new.iloc[:,1], name=name2)
-    data0 = [trace01, trace02]
+    trace03 = go.Scatter(x=df_new.tail(1).index, y=df_new.tail(1).iloc[:,0],
+                         mode="markers+text",
+                         text=["<b>"+str(round(df_new.tail(1).iloc[:,0].values[0],2))+"</b>"],
+                         textposition='left', showlegend=False)
+    data0 = [trace01, trace02, trace03]
     layout0 = go.Layout(title="<b>{}</b>".format(title),
                         yaxis=dict(title="%momsa", tickmode="auto", nticks=5),
                         font=dict(size=18), legend=dict(x=0, y=-0.4))
     return go.Figure(data=data0, layout=layout0)
 
 py.image.save_as(month_ma_chart("2015-02-01",
-                           df_ma, "IBC-br", "3M ma", "IBC-br"),
+                                df_ma, "%momsa", "3M ma", "GDP Monthly Tracker (IBC-br)"),
                  "../exhibits/ibc_br_chart.jpeg",format="jpeg")
