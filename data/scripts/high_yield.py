@@ -5,7 +5,8 @@
 from fred import *
 import pandas as pd
 
-series = {"BAMLH0A0HYM2":"BofA US High Yield Spreads", "BAMLEMHBHYCRPIOAS": "BofA EMs High Yield Corporate Spreads"}
+series = {"BAMLH0A0HYM2":"BofA US High Yield Spreads", "BAMLEMHBHYCRPIOAS": "BofA EMs High Yield Corporate Spreads",
+          "BAMLEMIBHGCRPIOAS": "BofA EMs High Grade Corporate Spreads", "BAMLC0A1CAAA": "BofA US AAA Spreads"}
 
 
 df = fetch_fred(series.keys())
