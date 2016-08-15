@@ -38,7 +38,7 @@ def fetch_imf_struct(id):
     pandas dataframe
     '''
     url = _url_structure+"{}".format(id)
-    doc_struct = json.loads(requests.get(url).text)['Structure']['KeyFamilies']\
+    doc_struct = json.loads(requests.get(url).text.encode('utf-8'))['Structure']['KeyFamilies']\
                             ['KeyFamily']['Components']['Dimension']
 
     return pd.DataFrame([(s['@conceptRef'], s["@codelist"]) for s in doc_struct],
