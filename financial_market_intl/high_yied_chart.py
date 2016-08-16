@@ -6,7 +6,8 @@ import pandas as pd
 import plotly.plotly as py
 import plotly.graph_objs as go
 
-df = pd.read_csv("../data/high_yields.csv", index_col=[0])
+df = pd.read_csv("../data/high_yields.csv", index_col=[0],
+                 na_values=['.'])
 
 
 def chart_gen(df, title, y_title, leg, date_ini):
@@ -28,7 +29,9 @@ def chart_gen(df, title, y_title, leg, date_ini):
         dat = go.Scatter(x=df_final.index, y=df_final.iloc[:, i], name=leg[i])
         data.append(dat)
     layout = go.Layout(title="<b>{}</b>".format(title),
-                       yaxis=dict(title="{}".format(y_title), tickmode="auto", nticks=5),
+                       yaxis=dict(title="{}".format(y_title),
+                                  tickmode="auto", nticks=5,
+                                  range=[2, 10]),
                        font=dict(size=18), legend=dict(x=0, y=-0.4))
     brexit = "2016-06-23"
     layout.update(dict(
@@ -44,6 +47,7 @@ def chart_gen(df, title, y_title, leg, date_ini):
         annotations=[go.Annotation(text="Brexit", x=brexit,
                                    y=float(df_final.iloc[:, 1].max()))]))
     return go.Figure(data=data, layout=layout)
+
 
 
 # Yield chart
