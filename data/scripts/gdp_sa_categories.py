@@ -38,7 +38,7 @@ urls = [url.format(s) for s in series]
 
 
 ## fetch data
-df = ibge_fetch(urls)
+df = ibge_fetch(urls, freq="Q")
 df.columns = names
 df.index.name = "Date"
 df.to_csv("../gdp_sa_categories.csv")
