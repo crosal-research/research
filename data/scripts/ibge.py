@@ -22,7 +22,6 @@ def _fetch_data(reps, freq):
     freq_dic = {"M": "MS", "Q": "QS", "Y": "A"}
     df = pd.read_json(reps).iloc[1:].pivot("D1C", "D3C", "V")
     dates = pd.to_datetime([d+"01" for d in df.index])
-    #year_obs = np.unique(dates.year, return_counts=True)[1].max()
     dates_corrected = pd.date_range(dates[0], periods=len(dates),
                                     freq=freq_dic[freq])
     return pd.DataFrame(df.values, columns=df.columns, index=dates_corrected)
@@ -31,10 +30,12 @@ def _fetch_data(reps, freq):
 
 def ibge_fetch(urls, freq="M"):
     '''function to fetch series IBGE's api using full url as input. Takes
-    a string and returns a pandas dataframe.  -
+    a string and returns a pandas dataframe.
+    -input:
     urls: list(str) with url - must the in the corrected order:
           t, p, v and so on.
-    return: pandas dataframe
+    freq: str
+    -output: pandas dataframe
     '''
     s = requests.session()
     df = _fetch_data(s.get(urls[0]).text, freq)
