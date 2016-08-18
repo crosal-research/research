@@ -7,7 +7,6 @@
 
 from ibge import *
 
-
 d = {"7169":  "Indice geral",
      "7170":  "1.Alimentacao e bebidas",
      "7171":  "11.Alimentacao no domicilio",
@@ -464,36 +463,35 @@ d = {"7169":  "Indice geral",
      "12430":  "9101022.TV por assinatura com internet"}
 
 
-ipca = ["7169"]
 items = [i for i in d if len(d[i].split(".")[0]) <= 4]
 names = [d[i].split(".")[1] for i in d if len(d[i].split(".")[0]) <= 4]
 
 
 # requests monthly changes from sidra's api
 req = ",".join(items)
+address_ch = "http://www.sidra.ibge.gov.br/api/values/t/1419" + \
+             "/p/all/v/63/c315/{}/n1/1/f/a"
+url_ch = address_ch.format(req)
 
-address = "http://www.sidra.ibge.gov.br/api/values/t/1419" + \
-      "/p/all/v/63/c315/{}/n1/1/f/a"
-urls = [address.format(u) for u in items]
-url = address.format(req)
+address_weight = "http://www.sidra.ibge.gov.br/api/values/t/1419" + \
+                 "/p/all/v/66/c315/{}/n1/1/f/a"
+url_weight = address_weight.format(req)
+
+# ch
+df_ch = ibge_fetch([url_ch])
+df_chs = pd.DataFrame(df_ch.stack())
+df_chs.index.names = ["date", "items"]
+
+# weight
+df_weigth = ibge_fetch([url_weight])
+df_weights = pd.DataFrame(df_weigth.stack())
+df_weights.index.names = ['date', 'items']
+
+# produces final dataset
+df_final = pd.merge(df_chs, df_weights,
+                    right_index=True,
+                    left_index=True, how = 'outer')
+df_final.columns = ["mom", "peso"]
 
 
-df = ibge_fetch([url])
-df.columns = [d[i].split(".")[1] for i in items]
-
-df.to_csv("../../data/ipca_ch.csv", head=True, index = True)
-
-
-# requests monthly percentages from sidra's api
-req = ",".join(items)
-
-address = "http://www.sidra.ibge.gov.br/api/values/t/1419" + \
-      "/p/all/v/66/c315/{}/n1/1/f/a"
-urls = [address.format(u) for u in items]
-url = address.format(req)
-
-
-df = ibge_fetch([url])
-df.columns = [d[i].split(".")[1] for i in items]
-
-df.to_csv("../../data/ipca_peso.csv", head=True, index = True)
+df_final.to_csv("../../data/ipca.csv", head=True, index = True)
