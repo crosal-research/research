@@ -11,7 +11,7 @@ series = {'20539':"Total", '20540':"Institutions",
           '20594':"earmarked_com", '4380':"GDP"}
 
 today = datetime.today().strftime("%d/%m/%Y")
-df = fetch_bcb(series.keys(), '01/03/2006', '01/05/2016')
+df = fetch_bcb(series.keys(), '01/03/2006', today)
 
 
 df.columns = [series[s] for s in df.columns]
