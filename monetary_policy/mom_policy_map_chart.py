@@ -52,7 +52,7 @@ def mon_map(df_exp, df_inf, new_date, last_meeting, daily=True):
                      showlegend=False)
     data = [trace01, trace02, trace03, trace04, trace05, trace06]
     layout = go.Layout(title="<b>Monetary Policy Credibility Map</b>",
-                   yaxis=dict(title="%mom", tickmode='auto', nticks=5,
+                   yaxis=dict(title="%yoy", tickmode='auto', nticks=5,
                               tickfont=dict(size=14), showgrid=False),
                    xaxis=dict(showgrid=False, tickfont=dict(size=14),
                               tickangle=-30),
@@ -75,5 +75,5 @@ def mon_map(df_exp, df_inf, new_date, last_meeting, daily=True):
 
 
 ## render figures.
-py.image.save_as(mon_map("2016-02-01", "2016-06-08"), '../exhibits/monetary_pol_map_daily.jpeg', format="jpeg")
-py.image.save_as(mon_map("2013-02-01", "2016-06-08", False), '../exhibits/monetary_pol_map_monthly.jpeg', format="jpeg")
+py.image.save_as(mon_map(df_exp, df_inf, "2016-04-01", "2016-06-08"), '../exhibits/monetary_pol_map_daily.jpeg', format="jpeg")
+py.image.save_as(mon_map(df_exp, df_inf, "2013-02-01", "2016-06-08", False), '../exhibits/monetary_pol_map_monthly.jpeg', format="jpeg")

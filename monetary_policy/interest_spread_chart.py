@@ -1,4 +1,4 @@
-######################################################################
+3######################################################################
 # Chart for interest rates sprads
 # initial date: 28/06/2016
 ######################################################################
@@ -8,13 +8,13 @@ import plotly.graph_objs as go
 
 
 df = pd.read_csv("../data/interest_spread.csv", header=0, index_col=0,
-                 usecols=[0, 1,4,5]).dropna()
+                 usecols=[0, 1,4,5]).fillna(method='ffill')
 
 ## chart
 
 
 def chart_gen(df, title, y_title, leg, data_ini):
-    df_cut = df[df.index >= start_date]
+    df_cut = df[start_date:]
     data = []
     for i in range(0, len(df.columns)):
         trace = go.Scatter(x=df_cut.index, y=df_cut.iloc[:,i], name=leg[i])
