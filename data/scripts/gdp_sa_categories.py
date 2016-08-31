@@ -10,35 +10,34 @@ from ibge import *
 url = "http://www.sidra.ibge.gov.br/api/values/t/1621" + \
       "/p/all/v/584/c11255/{}/n1/1/f/a"
 
-d= {"90687":  "Agropecuaria - total",
-    "90691":  "Industria - total",
-    "90692":  "Extrativa mineral",
-    "90693":  "Transformacao",
-    "90695":  "Producao e distribuicao de eletricidade, gas, agua, esgoto e limpeza urbana",
-    "90694":  "Construcao civil",
-    "90696":  "Servicos - total",
-    "90697":  "Comercio",
-    "90698":  "Transporte, armazenagem e correio",
-    "90699":  "Servicos de informacao",
-    "90700":  "Intermediacao financeira, seguros, previdencia complementar e servicos relacionados",
-    "90702":  "Atividades imobiliarias",
-    "90701":  "Outros servicos",
-    "90703":  "Administracao, saude e educacao publicas e seguridade social",
-    "90705":  "Valor adicionado a precos basicos",
-    "90707":  "PIB a precos de mercado",
-    "93404":  "Despesa de consumo das familias",
-    "93405":  "Despesa de consumo da administracao publica",
-    "93406":  "Formacao bruta de capital fixo",
-    "93407":  "Exportacao de bens e servicos",
-    "93408":  "Importacao de bens e servicos (-)"}
+d= {"90687":  "Agriculture",
+    "90691":  "Industry - Total",
+    "90692":  "Mining",
+    "90693":  "Transformation",
+    "90695":  "Public Utilities",
+    "90694":  "Construction",
+    "90696":  "Services - Total",
+    "90697":  "Commerce",
+    "90698":  "Transport, Storage and Mailing",
+    "90699":  "IT",
+    "90700":  "Financial Intermediation",
+    "90702":  "Real Estate Activity",
+    "90701":  "Other Services",
+    "90703":  "Public services and Social Security",
+    "90705":  "Value Added",
+    "90707":  "GDP",
+    "93404":  "Household Consumption",
+    "93405":  "Public Consumption",
+    "93406":  "Net Investment",
+    "93407":  "Exports of Goods and Services",
+    "93408":  "Imports of Goods and Services"}
 
 series = d.keys()
-names = [d[k] for k in series]
 urls = [url.format(s) for s in series]
 
 
 ## fetch data
 df = ibge_fetch(urls, freq="Q")
-df.columns = names
+df.columns = [d[k] for k in df.columns]
 df.index.name = "Date"
 df.to_csv("../gdp_sa_categories.csv")
