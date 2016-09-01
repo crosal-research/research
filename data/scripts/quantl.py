@@ -3,16 +3,15 @@
 # initial date: 13/07/2016
 ######################################################################
 import pandas as pd
-import numpy as np
-import json
+
 
 __all__ = ['fetch_quantl_ts']
 
 
-_url_quantl = "https://www.quandl.com/api/v3/datasets//{}/{}.csv?api_key={}&order=asc"
+_url_quantl = "https://www.quandl.com/api/v3/datasets//{}/{}.csv?api_key={}&order=asc&start_date={}&end_date={}"
 
 
-def fetch_quantl_ts(db, series, key):
+def fetch_quantl_ts(db, series, key, start='', end=''):
     """
     Takes a list of quantl's series. Returns
     a pandas data frame
@@ -24,6 +23,6 @@ def fetch_quantl_ts(db, series, key):
     -----
     - pandas data frame
     """
-    url = _url_quantl.format(db, series[0], key)
+    url = _url_quantl.format(db, series[0], key, start, end)
     df = pd.read_csv(url, index_col=[0])
     return df
