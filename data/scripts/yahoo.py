@@ -24,7 +24,7 @@ def fetch_yahoo(tickers, date_ini, date_final):
         df = pd.merge(df,
                    pd.read_csv(url, index_col=0, usecols=[0,6], skiprows=[0],
                                names = ["Date", t]).sort_index(ascending=True),
-                   left_index=True, right_index=True, how="inner")
+                   left_index=True, right_index=True, how="outer")
     df.columns = tickers
     return df
 
