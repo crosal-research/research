@@ -17,13 +17,13 @@ def fetch_yahoo(tickers, date_ini, date_final):
     - pandas data frame
     '''
     url = _build_url(tickers[0], date_ini, date_final)
-    df =  pd.read_csv(url, index_col=0, usecols=[0,6], skiprows=[0],
+    df =  pd.read_csv(url, index_col=0, usecols=[0, 6], skiprows=[0],
                        names = ["Date", tickers[0]]).sort_index(ascending=True)
     for t in tickers[1:]:
         url = _build_url(t, date_ini, date_final)
         df = pd.merge(df,
                    pd.read_csv(url, index_col=0, usecols=[0,6], skiprows=[0],
-                               names = ["Date", tickers[0]]).sort_index(ascending=True),
+                               names = ["Date", t]).sort_index(ascending=True),
                    left_index=True, right_index=True, how="inner")
     df.columns = tickers
     return df
@@ -42,6 +42,6 @@ def _build_url(ticker, date_ini, date_final):
     d_ini = date_ini.split("/")
     d_final = date_final.split("/")
     dates = "a={}&b={}&c={}&d={}&e={}&f={}&g=d&i" \
-            "gnore=.csv".format(str(int(d_ini[1])-1), d_ini[2], d_ini[0],
-                                str(int(d_final[1])-1), d_final[2], d_final[0])
+            "gnore=.csv".format(str(int(d_ini[0])-1), str(int(d_ini[1])), d_ini[2],
+                                str(int(d_final[0])-1), str(int(d_final[1])), d_final[2])
     return "http://chart.finance.yahoo.com/table.csv?s={}&{}".format(ticker, dates)
