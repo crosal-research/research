@@ -13,7 +13,7 @@ df_year['Target'] = 2.0
 df_year.columns = ["CPI", "Core Inflation", "Target"]
 
 
-def gen_chart(df, title, y_title, leg, date_ini):
+def gen_chart(df, title, y_title, leg, date_ini, source=True):
     df_final = df[df.index >= date_ini]
     data = []
     col = ["#00cc00", "#ff9900", "black"]
@@ -25,10 +25,25 @@ def gen_chart(df, title, y_title, leg, date_ini):
                     mode="markers+text",
                     text=["<b>"+str(round(df_final.tail(1).iloc[:, i].values[0], 1))+"</b>"],
                                textposition=pos, showlegend=False,
-                    marker=dict(color=col[i])))
+                               marker=dict(color=col[i]),
+                               textfont=dict(color=col[i])))
     layout = go.Layout(title="<b>{}</b>".format(title),
                        yaxis=dict(title=y_title), font=dict(size=18),
                        legend=dict(x=0, y=-0.4))
+
+    if source:
+        layout.update(dict(annotations=[dict(
+            x=.95,
+            y= -0.4,
+            xref='paper',
+            yref='paper',
+            text="<b><i>CRosal Independent Research</i></b>",
+            font=dict(size=14, family='Courier new', color="#ffffff"),
+            bgcolor='#ff8080',
+            opacity=0.5,
+            showarrow=False
+        )]))
+
     return go.Figure(data=data, layout=layout)
 
 

@@ -12,7 +12,6 @@ df_12m = df.rolling(window=12).sum().dropna()
 df_gdp = df_12m.div(df_12m['GDP'], axis=0).iloc[:,1:]*10
 
 
-
 def gen_chart(df, title, y_title, date_ini, source=True):
     df_final = df[df.index >= date_ini]
     col = ["#000099", " #ff9900", "#00cc00"]
@@ -26,30 +25,29 @@ def gen_chart(df, title, y_title, date_ini, source=True):
                                mode="markers+text",
                                text=["<b>"+str(round(df_final.tail(1).iloc[:, i].values[0], 1))+"</b>"],
                                textposition='top left',
-                               textfont=dict(size=14)))
+                               textfont=dict(size=16)))
 
     layout = go.Layout(title="<b>{}</b>".format(title),
                        yaxis=dict(title=y_title, tickmode="auto", nticks=5),
                        legend=dict(x=0, y=-0.4),
-                       font=dict(size=18),
+                       font=dict(size=22),
                        annotations=[dict(x=df.tail(1).index.values[0],
                                          y=df.max().max()*(1.1),
                                          xref='x',
                                          yref='y',
                                          text="<b>"+ pd.to_datetime(df.tail(1).index).strftime("%b-%Y")[0]+"</b>",
-                                         font=dict(size=14))])
-    if source == True:
-        layout.update(dict(annotations=[dict(
-            x=.95,
-            y=-0.4,
-            xref='paper',
-            yref='paper',
-            text="<b><i>CRosal Independent Research</i></b>",
-            font=dict(size=14, family='Courier new', color="#ffffff"),
-            bgcolor='#ff8080',
-            opcity=0.5,
-            showarrow=False
-        )]))
+                                         font=dict(size=16)),
+                                    dict(
+                                        x=.95,
+                                        y=-0.4,
+                                        xref='paper',
+                                        yref='paper',
+                                        text="<b><i>CRosal Independent Research</i></b>",
+                                        font=dict(size=16, family='Courier new', color="#ffffff"),
+                                        bgcolor='#ff8080',
+                                        opacity=0.5,
+                                        showarrow=False
+                                    )])
 
     return go.Figure(data=data, layout=layout)
 

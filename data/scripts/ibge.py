@@ -43,7 +43,7 @@ def ibge_fetch(urls, freq="M"):
     df.columns.name = None
 
     for url in urls[1:]:
-        df_new = _fetch_data(s.get(url).text, freq)
+        df_new = _fetch_data(s.get(url).text.encode('utf-8'), freq)
         df_new.index.name = "date"
         df_new.columns.name = None
         df = pd.merge(df, df_new, left_index=True,

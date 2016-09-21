@@ -6,6 +6,10 @@
 ######################################################################
 from ibge import *
 import pandas as pd
+import os
+
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
+
 
 ## atividades
 url = "http://www.sidra.ibge.gov.br/api/values/t/3418" + \
@@ -45,7 +49,6 @@ df1 = ibge_fetch(urls1)
 df1.columns = names
 df1.index.name = "Date"
 
-
 ## Data Consolidation and save onto to the disk
 df_final = pd.merge(df, df1, left_index=True, right_index=True, how="outer")
-df_final.to_csv("../retail_activities_sa.csv", index=[0], header=True)
+df_final.to_csv(os.path.join(caminho,"retail_activities_sa.csv"), index=[0], header=True)

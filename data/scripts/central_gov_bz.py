@@ -4,6 +4,10 @@
 ######################################################################
 from bcb import *
 from datetime import datetime
+import os
+
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
+
 
 series = {"7544": "Total_rev",
           "7545": "total_rev_treasury",
@@ -34,4 +38,4 @@ today = datetime.today().strftime("%d/%m/%Y")
 
 df = fetch_bcb(series.keys(), date_ini, today)
 df.columns = [series[d] for d in df.columns]
-df.to_csv("../central_gov_bz.csv", head=True, index=True)
+df.to_csv(os.path.join(caminho, "central_gov_bz.csv"), head=True, index=True)

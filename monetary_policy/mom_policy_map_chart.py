@@ -51,29 +51,31 @@ def mon_map(df_exp, df_inf, new_date, last_meeting, daily=True):
                      name="Lower Limit", line=dict(color="red", dash="dot"),
                      showlegend=False)
     data = [trace01, trace02, trace03, trace04, trace05, trace06]
-    layout = go.Layout(title="<b>Monetary Policy Credibility Map</b>",
-                   yaxis=dict(title="%yoy", tickmode='auto', nticks=5,
-                              tickfont=dict(size=14), showgrid=False),
-                   xaxis=dict(showgrid=False, tickfont=dict(size=14),
-                              tickangle=-30),
-                   font=dict(size=18), legend=dict(x=0, y=-0.6, font=dict(size=14)))
 
-    if daily:
-        layout.update(dict(
-            shapes=[
-                {"type": 'line',
-                 'xref': 'x',
-                 'yref': 'y',
-                 'x0': last_meeting,
-                 'y0': 0,
-                 'x1': last_meeting,
-                 'y1': 11,
-                 'line': dict(dash="dot", color="blue")
-                }],
-            annotations=[go.Annotation(text="Last COPOM", x=last_meeting, y=11)]))
+    # end period anntotations
+    data.append(go.Scatter(x=df_final.tail(1).index, y=df_final.tail(1).loc[:, 'ipca'],
+                           marker=dict(color="orange"),
+                           showlegend=False, mode="markers+text",
+                           text=["<b>"+str(round(df_final.tail(1).loc[:, 'ipca'].values[0], 1))+"</b>"],
+                           textposition='top left',
+                           textfont=dict(size=16)))
+    data.append(go.Scatter(x=df_final.tail(1).index, y=df_final.tail(1).loc[:, 'expected'],
+                           marker=dict(color="black"),
+                           showlegend=False, mode="markers+text",
+                           text=["<b>"+str(round(df_final.tail(1).loc[:, 'expected'].values[0], 1))+"</b>"],
+                           textposition='top left',
+                           textfont=dict(size=16)))
+
+    layout = go.Layout(title="<b>Monetary Policy Credibility Map</b>",
+                       yaxis=dict(title="%yoy", tickmode='auto', nticks=5,
+                                  tickfont=dict(size=16), showgrid=False),
+                       xaxis=dict(showgrid=False, tickfont=dict(size=16),
+                                  tickangle=-0),
+                       font=dict(size=22), legend=dict(x=0, y=-0.6, font=dict(size=16)))
+
     return go.Figure(data=data, layout=layout)
 
 
 ## render figures.
-py.image.save_as(mon_map(df_exp, df_inf, "2016-04-01", "2016-06-08"), '../exhibits/monetary_pol_map_daily.jpeg', format="jpeg")
+py.image.save_as(mon_map(df_exp, df_inf, "2016-01-05", "2016-06-08"), '../exhibits/monetary_pol_map_daily.jpeg', format="jpeg")
 py.image.save_as(mon_map(df_exp, df_inf, "2013-02-01", "2016-06-08", False), '../exhibits/monetary_pol_map_monthly.jpeg', format="jpeg")

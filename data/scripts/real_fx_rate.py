@@ -2,17 +2,18 @@
 # fetch data for effective exchange rate, Brazil
 # initial date: 05/07/2016
 ######################################################################
-import finnacloud_api as fa
-import json, os
+import bcb
 import pandas as pd
+from datetime import datetime
+import os
 
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
 
-f_dir = os.path.join(os.path.expanduser('~'),"crosal/.finnacloud.json")
-key = json.loads(open(f_dir).read())['key'].encode('utf-8')
-fc = fa.Finn_Api(key)
+series = {'11752':"fx_real", '11776':"fx_prod"}
 
+date_ini = "31/01/1989"
+today = datetime.today().strftime("%d/%m/%Y")
 
-series = ['BCB.BZFXREAL', 'BCB.BRFXREALPROD']
-df = fc.get_series(series)
-df.columns = ["fx_real", "fx_prod"]
-df.to_csv("../real_fx_rate.csv", header=True, index=True)
+df = bcb.fetch_bcb(series.keys(), date_ini, today)
+df.columns = [series[k] for k in series]
+df.to_csv(os.path.join(caminho, "real_fx_rate.csv"), header=True, index=True)

@@ -41,6 +41,3 @@ def exclusao(df, date, d):
     - date: string - format: %Y-%m-%d")
     - d: dict (indexes of the raw data)
     '''
-
-
-#

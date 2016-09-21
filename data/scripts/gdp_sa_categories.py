@@ -4,6 +4,9 @@
 # comment: fix the data to quarterly from monthly.
 ######################################################################
 from ibge import *
+import os
+
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
 
 
 ## Data to fetch gdp by categories
@@ -40,4 +43,5 @@ urls = [url.format(s) for s in series]
 df = ibge_fetch(urls, freq="Q")
 df.columns = [d[k] for k in df.columns]
 df.index.name = "Date"
-df.to_csv("../gdp_sa_categories.csv")
+df.index = pd.date_range(df.index[0], periods = len(df), freq="QS")
+df.to_csv(os.path.join(caminho,"gdp_sa_categories.csv"))

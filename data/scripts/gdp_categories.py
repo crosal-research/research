@@ -3,7 +3,10 @@
 # initial date:
 ######################################################################
 from ibge import *
+import os
 
+
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
 
 ## Data to fetch gdp by categories
 url = "http://www.sidra.ibge.gov.br/api/values/t/1621" + \
@@ -37,6 +40,6 @@ urls = [url.format(s) for s in series]
 
 ## fetch data
 df = ibge_fetch(urls, freq="Q")
-df.columns = [d[k] for k in df.columsn]
+df.columns = [d[k] for k in df.columns]
 df.index.name = "Date"
-#df.to_csv("../gdp_categories.csv")
+df.to_csv(os.path.join(caminho,"gdp_categories.csv"))

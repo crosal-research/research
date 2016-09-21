@@ -14,7 +14,7 @@ df_col = pd.merge(pd.DataFrame(df.iloc[:, 3]),
 df_col.columns = ["services", "3M ma"]
 
 
-def gen_chart(df, title, y_title, leg, date_ini):
+def gen_chart(df, title, y_title, leg, date_ini, source=True):
     '''
     '''
     df_final = df[df.index >= date_ini]
@@ -35,8 +35,41 @@ def gen_chart(df, title, y_title, leg, date_ini):
         data.append(trace01)
         layout = go.Layout(title="<b>{}</b>".format(title),
                            font=dict(size=18),
+                           legend=dict(x=0, y=-0.4),
                            yaxis=dict(title=y_title,
-                                      tickmode="auto", nticks=5))
+                                      tickmode="auto", nticks=5),
+                           annotations=[dict(x=df_final.tail(1).index.values[0],
+                                         y=df_final.max().max()*(1.1),
+                                         xref='x',
+                                         yref='y',
+                                         text="<b>"+ pd.to_datetime(df_final.tail(1).index).strftime("%b-%Y")[0]+"</b>",
+                                         font=dict(size=16)),
+                                    dict(
+                                        x=.95,
+                                        y= -0.4,
+                                        xref='paper',
+                                        yref='paper',
+                                        text="<b><i>CRosal Independent Research</i></b>",
+                                        font=dict(size=16, family='Courier new', color="#ffffff"),
+                                        bgcolor='#ff8080',
+                                        opacity=0.5,
+                                        showarrow=False
+                                    )])
+
+    if source:
+        layout.update(dict(annotations=[dict(
+            x=.95,
+            y= -0.4,
+            xref='paper',
+            yref='paper',
+            text="<b><i>CRosal Independent Research</i></b>",
+            font=dict(size=14, family='Courier new', color="#ffffff"),
+            bgcolor='#ff8080',
+            opacity=0.5,
+            showarrow=False
+        )]))
+
+
     return go.Figure(data=data, layout=layout)
 
 date_start = "2015-09-01"

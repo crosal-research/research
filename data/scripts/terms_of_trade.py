@@ -3,6 +3,10 @@
 # initial date: 04/07/2016
 ######################################################################
 import pandas as pd
+import os
+
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
+
 
 ## url for the data
 url = "http://www.ipeadata.gov.br/ExibeSerie.aspx?oper=exportCSVBr&"
@@ -12,4 +16,4 @@ df = pd.read_csv(url, sep = ";", usecols=[0, 1, 2],
 df.columns = ['import', 'export']
 
 ## save data
-df.to_csv('../terms_of_trade.csv', index=True, header=True)
+df.to_csv(os.path.join(caminho, 'terms_of_trade.csv'), index=True, header=True)

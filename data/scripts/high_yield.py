@@ -4,6 +4,9 @@
 ######################################################################
 from fred import *
 import pandas as pd
+import os
+
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
 
 series = {"BAMLH0A0HYM2":"BofA US High Yield Spreads", "BAMLEMHBHYCRPIOAS": "BofA EMs High Yield Corporate Spreads",
           "BAMLEMIBHGCRPIOAS": "BofA EMs High Grade Corporate Spreads", "BAMLC0A1CAAA": "BofA US AAA Spreads"}
@@ -11,4 +14,4 @@ series = {"BAMLH0A0HYM2":"BofA US High Yield Spreads", "BAMLEMHBHYCRPIOAS": "Bof
 
 df = fetch_fred(series.keys())
 df.columns = [series[d] for d in df.columns]
-df.to_csv("../high_yields.csv", header=True, index_col=True)
+df.to_csv(os.path.join(caminho, "high_yields.csv"), header=True, index_col=True)

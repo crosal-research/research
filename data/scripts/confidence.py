@@ -9,6 +9,9 @@ import json, os
 import pandas as pd
 
 
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
+
+
 ## finnacloud bloiler place
 _f_dir = "/home/jmrosal/Documents/crosal/.keys.json"
 key = json.loads(open(_f_dir).read())['finnacloud']['key'].encode('utf-8')
@@ -19,4 +22,4 @@ fc = fa.Finn_Api(key)
 
 series = ["bcb.bricssafgv", 'bcb.bricc']
 df = fc.get_series(series)
-df.to_csv("../confianca.csv")
+df.to_csv(os.path.join(caminho, "confianca.csv"))

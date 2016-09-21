@@ -25,18 +25,29 @@ def gen_chart(df, title, y_title, date_ini):
                                mode="markers+text",
                                text=["<b>"+str(round(df_final.tail(1).iloc[:, i].values[0], 1))+"</b>"],
                                textposition='top',
-                               textfont=dict(size=14)))
+                               textfont=dict(size=16)))
 
     layout = go.Layout(title="<b>{}</b>".format(title),
                        yaxis=dict(title=y_title, tickmode="auto", nticks=5),
                        legend=dict(x=0, y=-0.4),
-                       font=dict(size=18),
+                       font=dict(size=22),
                        annotations=[dict(x=df.tail(1).index.values[0],
                                          y=df.max().max()*(1.1),
                                          xref='x',
                                          yref='y',
                                          text="<b>"+ pd.to_datetime(df.tail(1).index).strftime("%b-%Y")[0]+"</b>",
-                                         font=dict(size=14))])
+                                         font=dict(size=16)),
+                                                                dict(
+                                        x=.95,
+                                        y= -0.4,
+                                        xref='paper',
+                                        yref='paper',
+                                        text="<b><i>CRosal Independent Research</i></b>",
+                                        font=dict(size=16, family='Courier new', color="#ffffff"),
+                                        bgcolor='#ff8080',
+                                        opacity=0.5,
+                                        showarrow=False)
+                       ])
     return go.Figure(data=data, layout=layout)
 
 
@@ -44,7 +55,7 @@ def gen_chart(df, title, y_title, date_ini):
 df_qual = df.loc[:, ['total_del', 'companies_del', 'households_del']]
 df_qual.columns = ["Total", "Companies", "Households"]
 date_qual = '2012-01-01'
-py.image.save_as(gen_chart(df_qual, "Deliquencies", "%Credit Class",
+py.image.save_as(gen_chart(df_qual, "Credit Deliquencies", "%Credit Class",
                            date_qual),
                  "../exhibits/credit_quality.jpeg",
                  format="jpeg")

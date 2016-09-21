@@ -3,7 +3,7 @@
 # initial date: 15/08/2016
 ######################################################################
 import pandas as pd
-import plotly.plotly as py_
+import plotly.plotly as py
 import plotly.graph_objs as go
 
 df = pd.read_csv("../data/terms_of_trade.csv", index_col=[0])

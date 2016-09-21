@@ -4,6 +4,9 @@
 ################################################################################
 
 import pandas as pd
+import os
+
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
 
 # fetch data
 url = "http://www.econ.yale.edu/~shiller/data/ie_data.xls"
@@ -16,4 +19,4 @@ df.index.name = "date"
 
 # auxiliar data
 df.loc[:, "ave"] = pd.DataFrame([df.mean() for i in range(0, len(df.index))], index=df.index)
-df.to_csv("../shiller_ave.csv")
+df.to_csv(os.path.join(caminho,"shiller_ave.csv"))

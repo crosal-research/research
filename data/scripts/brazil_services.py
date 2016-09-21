@@ -5,7 +5,9 @@
 # initial date: 06/07/2016
 ######################################################################
 from ibge import *
+import os
 
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
 
 ## categories: no adjusted
 url = "http://www.sidra.ibge.gov.br/api/values/t/3840" + \
@@ -47,5 +49,5 @@ df_sa.columns = [d[k] for k in df_sa.columns]
 df.index.name = "Date"
 df_sa.index.name = "Date"
 
-df.to_csv("../servicos_brazil.csv")
-df_sa.to_csv("../servicos_brazil_sa.csv")
+df.to_csv(os.path.join(caminho,"servicos_brazil.csv"))
+df_sa.to_csv(os.path.join(caminho, "servicos_brazil_sa.csv"))

@@ -19,8 +19,7 @@ df_total.columns = ["total", "ma"]
 
 # chart
 
-
-def chart_gen(df, title, leg, y_title, date_ini):
+def chart_gen(df, title, leg, y_title, date_ini, source=True):
     df_total_last = df.iloc[-1:, :]
     df_total_new = df[df.index >= date_ini]
     trace01 = go.Scatter(x=df_total_new.index,
@@ -29,12 +28,27 @@ def chart_gen(df, title, leg, y_title, date_ini):
                      y=df_total_new.iloc[:,1], name=leg[1])
     trace03 = go.Scatter(x=df_total_last.index, y=df_total_last.iloc[:, 0],
                          mode="markers+text",
-                         text=["<b>"+str(round(df_total_last.values[0][0]))+"</b>"],
-                         textposition='left', showlegend=False)
+                         text=["<b>"+str(round(df_total_last.values[0][0], 1))+"</b>"],
+                         textposition='left', showlegend=False, textfont=dict(size=16))
     data = [trace01, trace02, trace03]
     layout = go.Layout(title="<b>{}</b>".format(title), legend=dict(x=0, y=-0.4),
-                       font=dict(size=18), yaxis=dict(title="{}".format(y_title),
-                                                      tickmode="auto", nticks=5))
+                       font=dict(size=22), yaxis=dict(title="{}".format(y_title),
+                                                      tickmode="auto", nticks=5),
+                       annotations=[dict(x=df_total_new.tail(1).index.values[0],
+                                         y=df.max().max()-5,
+                                         xref='x',
+                                         yref='y',
+                                         text="<b>"+ pd.to_datetime(df_total_new.tail(1).index).strftime("%b-%Y")[0]+"</b>",
+                                         font=dict(size=16)),
+                                    dict( x=.95,
+                                          y= -0.4,
+                                          xref='paper',
+                                          yref='paper',
+                                          text="<b><i>CRosal Independent Research</i></b>",
+                                          font=dict(size=16, family='Courier new', color="#ffffff"),
+                                          bgcolor='#ff8080',
+                                          opacity=0.5,
+                                          showarrow=False)])
     return go.Figure(data=data, layout=layout)
 
 

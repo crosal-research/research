@@ -5,52 +5,72 @@
 import pandas as pd
 import plotly.plotly as py
 import plotly.graph_objs as go
+import numpy as np
 
 df = pd.read_csv("../data/high_yields.csv", index_col=[0],
                  na_values=['.'])
 
 
-def chart_gen(df, title, y_title, leg, date_ini):
+def gen_chart(df, title, y_title, date_ini, source=True):
     '''
-    Generates plotly figure.
-    input:
-    - df: dataframe
-    - title: string
-    - y_title: string
-    - leg: [string]
-    - date_ini
-    output:
-    - ploly figure object
-
+    Produces plot.ly figure from a dataframe, the title, y title,
+    initial date and add crosal label.
+    inputs:
+    ------
+    - df: Dataframe
+    - tittle: str
+    - y_title: str
+    - date_ni: str (ex: Y%-%m-%d)
+    -source: boolean
+    Outputs:
+    -------
+    - plot.ly figure
     '''
     df_final = df[df.index >= date_ini]
     data = []
-    for i in range(len(df.columns)):
-        dat = go.Scatter(x=df_final.index, y=df_final.iloc[:, i], name=leg[i])
+    # Choose colors from http://colorbrewer2.org/ under "Export"
+    color = np.array(['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)',
+             'rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)',
+             'rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)',
+             'rgb(106,61,154)','rgb(255,255,153)','rgb(177,89,40)'])
+    for c in df_final.columns:
+        data.append(go.Scatter(x=df_final.tail(1).index, y=df_final.tail(1).loc[:, c],
+                               marker=dict(color=color[df.columns == c][0]),
+                               showlegend=False, mode="markers+text",
+                               text=["<b>"+str(round(df_final.tail(1).loc[:, c].values[0], 1))+"</b>"],
+                               textposition='top right',
+                               textfont=dict(size=15)))
+        dat = go.Scatter(x=df_final.index, y=df_final.loc[:, c],
+                         name=c, marker=dict(color = color[df.columns == c][0]))
         data.append(dat)
+
     layout = go.Layout(title="<b>{}</b>".format(title),
-                       yaxis=dict(title="{}".format(y_title),
-                                  tickmode="auto", nticks=5,
-                                  range=[2, 10]),
-                       font=dict(size=18), legend=dict(x=0, y=-0.4))
-    brexit = "2016-06-23"
-    layout.update(dict(
-        shapes=[
-            {"type": 'line',
-             'xref': 'x',
-             'yref': 'y',
-             'x0': brexit,
-             'y0': 0,
-             'x1': brexit,
-             'y1': float(df_final.iloc[:, 0].max())+1,
-             'line': dict(dash="dot", color="blue")}],
-        annotations=[go.Annotation(text="Brexit", x=brexit,
-                                   y=float(df_final.iloc[:, 1].max()))]))
+                       font=dict(size=18),
+                       yaxis=dict(title=y_title, tickmode="auto", nticks=5),
+                       legend=dict(x=-.1, y=-0.6),
+                       annotations=[dict(x=df_final.tail(1).index.values[0],
+                                         y=df_final.max().max(),
+                                         xref='x',
+                                         yref='y',
+                                         text="<b>"+ pd.to_datetime(df_final.tail(1).index).strftime("%b-%Y")[0]+"</b>",
+                                         font=dict(size=14)),
+                                    dict(
+                                        x=1.1,
+                                        y= -0.6,
+                                        xref='paper',
+                                        yref='paper',
+                                        text="<b><i>CRosal Independent Research</i></b>",
+                                        font=dict(size=14, family='Courier new', color="#ffffff"),
+                                        bgcolor='#ff8080',
+                                        opacity=0.5,
+                                        showarrow=False
+                                    )])
+
     return go.Figure(data=data, layout=layout)
 
 
 
 # Yield chart
 date_ini = "2016-01-04"
-py.image.save_as(chart_gen(df, "High Yield Spreads", "Percent", df.columns, date_ini), "../exhibits/high_yields.jpeg",
+py.image.save_as(gen_chart(df, "High Yield Spreads", "Percent", date_ini), "../exhibits/high_yields.jpeg",
                  format="jpeg")

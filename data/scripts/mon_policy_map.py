@@ -6,7 +6,10 @@ from bcb import *
 import json, os
 import pandas as pd
 import numpy as np
+import os
 from datetime import datetime
+
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
 
 series = {"433": "ipca", "4466": "core", "13521": "target"}
 today = datetime.today().strftime("%d/%m/%Y")
@@ -34,4 +37,4 @@ start_date = "2000-01-01"
 df_final = pd.merge(df_inf12, df[['target', 'upper', 'lower']].dropna(),
                     left_index=True, right_index=True, how='inner')
 df_f = df_final[start_date:]
-df_f.to_csv('../mom_policy_map.csv', header=True, index=True)
+df_f.to_csv(os.path.join(caminho, 'mom_policy_map.csv'), header=True, index=True)

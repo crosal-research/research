@@ -4,6 +4,9 @@
 ######################################################################
 from bcb import fetch_bcb
 from datetime import datetime
+import os
+
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
 
 series = {'190': "IGP",
           '225':"IPA",
@@ -18,4 +21,4 @@ today = datetime.today().strftime("%d/%m/%Y")
 
 df = fetch_bcb(series.keys(), date_ini, today)
 df.columns = [series[d] for d in df.columns]
-df.to_csv("../igpdi.csv", header=True, index=True)
+df.to_csv(os.path.join(caminho, "igpdi.csv"), header=True, index=True)

@@ -4,9 +4,11 @@
 # comment: tested only for exchange rate data
 #####################################################################
 import boe
+import os
 import pandas as pd
 from datetime import datetime
 
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
 
 ## Boe Info
 series = {"EC8":
@@ -83,4 +85,4 @@ series = {"EC8":
 
 df = boe.fetch_boe(["RLT", "ECT", "EC5", "IIK", "ECV", "IIO", "EC8", "IIQ", "C8H", "IIS"], "01/01/2016")
 df.columns = [series[s]["name"] for d in df.columns for s in series if series[s]["ticker"] == d]
-df.to_csv("../currencies.csv", header=True, index=True)
+df.to_csv(os.path.join(caminho, "currencies.csv"), header=True, index=True)

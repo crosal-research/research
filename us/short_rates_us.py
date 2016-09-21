@@ -1,4 +1,4 @@
-+######################################################################
+######################################################################
 # script to draw chart of 10 years us treasury
 # initial data: 08/07/2016
 ######################################################################
@@ -13,7 +13,7 @@ df = pd.read_csv('../data/interest_rates_us.csv', index_col=[0],
 
 ## chart
 
-def chart_gen(df, title, y_title, leg, data_ini):
+def chart_gen(df, title, y_title, leg, data_ini, source=True):
     df_final = df[df.index >= data_ini]
     trace01 = go.Scatter(x=df_final.index, y=df_final.iloc[:, 0],
                          name=leg[0])
@@ -25,6 +25,19 @@ def chart_gen(df, title, y_title, leg, data_ini):
                        yaxis=dict(title="{}".format(y_title),
                                   tickmode="auto", nticks=5),
                        legend=dict(x=0, y=-0.4))
+    if source:
+        layout.update(dict(annotations=[dict(
+            x=.95,
+            y= -0.4,
+            xref='paper',
+            yref='paper',
+            text="<b><i>CRosal Independent Research</i></b>",
+            font=dict(size=14, family='Courier new', color="#ffffff"),
+            bgcolor='#ff8080',
+            opacity=0.5,
+            showarrow=False
+        )]))
+
     return go.Figure(data=data, layout=layout)
 
 

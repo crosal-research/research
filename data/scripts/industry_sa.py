@@ -3,29 +3,47 @@
 # initial Date: 06/07/2016
 ###########################################################################
 from ibge import *
+import os
 
+caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
 
 ## atividades
 url = "http://www.sidra.ibge.gov.br/api/values/t/3653" + \
       "/p/all/v/3134/c544/{}/n1/1/f/a"
 
-series = ["129314", "129315", "129316", "129317", "129318",
-          "129319", "129320", "129321", "129322", "129323",
-          "129324", "129325", "129326", "129328", "129329",
-          "129330", "129331", "129332", "129333", "129334",
-          "129335", "129336", "129337", "129338", "129339",
-          "129340", "129341", "129342"]
+series = {"129314": "Geral",
+          "129315":"Extractive",
+          "129316": "Transforming",
+          "129317": "Food",
+          "129318": "Beverage",
+          "129319": "Tabacco",
+          "129320": "Textile",
+          "129321": "Apparel",
+          "129322": "Leather",
+          "129323": "Paper",
+          "129324": "Wood",
+          "129325": "Printing",
+          "129326": "Oil Refinery",
+          "129328": "Cleaning Products",
+          "129329": "Chemicals",
+          "129330": "Pharma",
+          "129331": "Rubber",
+          "129332": "Mineral (non-metalics)",
+          "129333": "Metalurgy",
+          "129334": "Metallics",
+          "129335": "IT",
+          "129336": "Eletronics",
+          "129337": "Machinery",
+          "129338": "Autos",
+          "129339": "Transportation",
+          "129340": "Furniture",
+          "129341": "Others",
+          "129342": "Maintanance"}
 
 urls = [url.format(s) for s in series]
 
 df = ibge_fetch(urls)
-df.columns = ["Geral", "Extractive", "Transforming", "Food",
-              "Beverage", "Tabacco", "Textile", "Apparel",
-              "Leather", "Paper", "Wood", "Printing", "Oil Refinery",
-              "Cleaning Products", "Chemicals", "Pharma",
-              "Rubber", "Mineral (non-metalics)", "Metalurgy",
-              "Metallics", "IT", "Eletronics", "Machinery", "Autos",
-              "Transportation", "Furniture", "Others", "Maintanance"]
+df.columns = [series[s] for s in df.columns]
 df.index.name = "Date"
 
 df.to_csv("../ind_atividades_sa.csv")
@@ -41,13 +59,12 @@ cat = {"129278": "Capital Goods",
        "129301": "Durable Consumption Goods",
        "129305": "Semi and non-durables"}
 
-series1 = ['129283', '129301', '129300', '129305', '129278']
-names1 = [cat[k] for k in series1]
+names1 = [cat[k] for k in cat]
 
-urls1 = [url1.format(s) for s in series1]
+urls1 = [url1.format(s) for s in cat]
 
 df1 = ibge_fetch(urls1)
-df1.columns = names1
+df1.columns = [cat[k] for k in df1.columns]
 df1.index.name1 = "Date"
 
-df1.to_csv("../ind_categories_sa.csv")
+df1.to_csv(os.path.join(caminho, "ind_categories_sa.csv"))
