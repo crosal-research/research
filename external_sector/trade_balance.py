@@ -13,7 +13,7 @@ df = pd.read_csv('../data/trade_balance.csv', index_col=0)
 df_12m = df.rolling(window=12).sum()
 df_gdp = df_12m.div(df_12m['GDP'], axis=0).iloc[:,:-1]*100
 
-df_trade = df_gdp[:, ['trade_balance', 'good_exports', 'good_imports']]
+df_trade = df_gdp.loc[:, ['trade_balance', 'good_exports', 'good_imports']]
 
 # help function to plot chart
 def gen_chart(df, title, y_title, date_ini, source=True):

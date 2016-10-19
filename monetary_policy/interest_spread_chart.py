@@ -1,4 +1,4 @@
-3######################################################################
+######################################################################
 # Chart for interest rates sprads
 # initial date: 28/06/2016
 ######################################################################
@@ -72,7 +72,7 @@ def chart_gen(df, title, y_title, data_ini, last_meeting):
 
 #generate chart
 start_date = "2016-04-01"
-last_meeting = '2016-07-20'
+last_meeting = '2016-08-31'
 py.image.save_as(chart_gen(df, "Interest Rate Term Structure",
                            "%p.y.", start_date, last_meeting),
                  '../exhibits/interest_spreads.jpeg', format="jpeg")

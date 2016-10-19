@@ -8,14 +8,14 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 
 
-df = pd.read_csv("../data/central_gov_bz.csv", index_col=0)
+df = pd.read_csv("../data/primary_surplus.csv", index_col=0)
 
-## real values
-dipca = pd.DataFrame((df['ipca']/100 + 1).cumprod())
+## Primary Surplus (real)
+dipca = pd.DataFrame((df['IPCA']/100 + 1).cumprod())
 dipca = dipca.div(dipca.tail(1).ix[0], axis=1)
-df_real = df.iloc[:,2:].div(dipca['ipca'], axis="index")
+dreal = df.iloc[:,:-2].div(dipca.iloc[:,0], axis=0)
+dspreal = dreal.iloc[:, [0, 33, 34, 70]]
 
-
-## GDP
-df_sum = df.iloc[:,2:].rolling(window=12).sum()
-df_gdp = df_sum.div(df['GDP_monthly'].rolling(window=12).sum(), axis=0).dropna()
+## Primary Surplus (GDP ratio)
+df_sum = df.rolling(window=12).sum()
+df_gdp = df_sum.iloc[:, :-2].div(df_sum.loc[:, 'GDP'], axis=0)*100

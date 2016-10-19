@@ -8,7 +8,8 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 
 # fetch data
-df = pd.read_csv("../data/ind_atividades_sa.csv", index_col=[0])
+df = pd.read_csv("../data/ind_atividades_sa.csv", index_col=[0],
+                 na_values="-")
 df_mave = df.rolling(window=3).mean()
 
 # data manipulation

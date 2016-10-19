@@ -1,41 +1,36 @@
 ######################################################################
 # retrieve data on central government fiscal accounts for BZ
 # initial date: 27/07/2016
+# last modification: 29/09/2016 - muda fonte para Tesouro Nacional
 ######################################################################
-from bcb import *
+import pandas as pd
+import bcb
 from datetime import datetime
 import os
 
 caminho = "/home/jmrosal/Documents/crosal/research/research/data/"
 
 
-series = {"7544": "Total_rev",
-          "7545": "total_rev_treasury",
-          "7546": "total_rev_ss",
-          "7547": "total_outlays",
-          "7548": "total_outlays_treasury",
-          "7549": "transfers_to_others",
-          "7550": "total_outlays_treasury_recor",
-          "7551": "trans_treasury_to_bcb",
-          "7552": "outlays_ss",
-          "7553": "outlays_civil_servants",
-          "7554": "primary_resul_treasury",
-          "7555": "primary_result_ss",
-          "7556": "primary_result_bcb",
-          "7557": "primary_result_total",
-          "7556": "errors",
-          "24389": "outlays_compulsory",
-          "24390": "outlays_discricionary",
-          "24391": "revenues_by_RFB",
-          "24392": "revenues_not_RFB",
-          "24393": "incentives",
-          "24394": "net_revenues",
-          "4381": "GDP_monthly",
-          "433": "ipca"}
+end = "2016-08-01"
+url = "http://www.tesouro.fazenda.gov.br/documents/10180/246449/Anexos+RTN+Ago+2016.xlsx"
+xls = pd.ExcelFile(url)
 
-date_ini = "31/01/1997"
+## primary results
+dat = pd.date_range(start="1997-01-01", end=end, freq = "MS")
+df = (xls.parse('1.1', skiprows=[0, 1, 2, 3], parse_cols=range(0, len(dat)+1),
+               skip_footer=5).T)
+cols = df.iloc[0, :].apply(lambda x: x.encode('utf-8'))
+df = df[df.index != df.index[0]].dropna(how="all")
+df.index = dat
+df.columns = cols
+
+## Central Bank series
+series = {'4380': "GDP", '433': "IPCA"}
 today = datetime.today().strftime("%d/%m/%Y")
+dc = bcb.fetch_bcb(series.keys(), "01/01/1997", today)
+dc.columns = [series[k] for k in dc.columns]
 
-df = fetch_bcb(series.keys(), date_ini, today)
-df.columns = [series[d] for d in df.columns]
-df.to_csv(os.path.join(caminho, "central_gov_bz.csv"), head=True, index=True)
+# save data
+dfinal = pd.merge(dsp, dc, left_index=True, right_index=True, how='outer')
+dfinal.to_csv(os.path.join(caminho, "primary_surplus.csv"), index=True,
+                           header=True)

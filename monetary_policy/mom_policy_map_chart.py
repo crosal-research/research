@@ -10,8 +10,9 @@ import plotly.graph_objs as go
 
 
 ## fetch data
-df_exp = pd.read_csv('../data/expected.csv', index_col = 0, decimal=",", parse_dates=[0],
+df_exp = pd.read_csv('../data/expected.csv', index_col = 0, decimal=".", parse_dates=[0],
                      dayfirst=True)
+
 df_inf = pd.read_csv('../data/mom_policy_map.csv', index_col=0)
 
 
@@ -29,6 +30,8 @@ def mon_map(df_exp, df_inf, new_date, last_meeting, daily=True):
     how = "outer" if daily else "inner"
     df_mid = pd.merge(df_exp, df_inf, left_index=True, right_index=True, how = how)
     df_mid.columns = ['expected', 'ipca', 'core', 'target', 'lower', 'upper']
+
+
     df_mid.fillna(method="pad", inplace=True)
 
     ## restricted dataset
@@ -77,5 +80,5 @@ def mon_map(df_exp, df_inf, new_date, last_meeting, daily=True):
 
 
 ## render figures.
-py.image.save_as(mon_map(df_exp, df_inf, "2016-01-05", "2016-06-08"), '../exhibits/monetary_pol_map_daily.jpeg', format="jpeg")
-py.image.save_as(mon_map(df_exp, df_inf, "2013-02-01", "2016-06-08", False), '../exhibits/monetary_pol_map_monthly.jpeg', format="jpeg")
+py.image.save_as(mon_map(df_exp, df_inf, "2016-01-05", "2016-08-31"), '../exhibits/monetary_pol_map_daily.jpeg', format="jpeg")
+py.image.save_as(mon_map(df_exp, df_inf, "2013-02-01", "2016-08-31", False), '../exhibits/monetary_pol_map_monthly.jpeg', format="jpeg")
